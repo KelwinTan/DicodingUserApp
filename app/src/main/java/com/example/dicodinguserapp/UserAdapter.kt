@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import de.hdodenhof.circleimageview.CircleImageView
 
 class UserAdapter internal constructor(private val context: Context) : BaseAdapter() {
 
@@ -33,7 +34,7 @@ class UserAdapter internal constructor(private val context: Context) : BaseAdapt
     private inner class ViewHolder internal constructor(view: View){
         private val txtUsername: TextView = view.findViewById(R.id.txt_username)
         private val txtName: TextView = view.findViewById(R.id.txt_name)
-        private val imgAvatar: ImageView = view.findViewById(R.id.img_avatar)
+        private val imgAvatar: CircleImageView = view.findViewById(R.id.img_avatar)
         private val txtCompany: TextView = view.findViewById(R.id.txt_company)
         private val txtLocation: TextView = view.findViewById(R.id.txt_location)
         private val txtRepository: TextView = view.findViewById(R.id.txt_repository)
@@ -42,13 +43,13 @@ class UserAdapter internal constructor(private val context: Context) : BaseAdapt
 
         internal fun bind(user: User){
             txtUsername.text = user.username
-            txtName.text = user.name
+            txtName.text = "Name: " + user.name
             imgAvatar.setImageResource(user.avatar)
-            txtCompany.text = user.company
-            txtLocation.text = user.location
-            txtRepository.text = user.repository.toString()
-            txtFollower.text = user.follower.toString()
-            txtFollowing.text = user.following.toString()
+            txtCompany.text = "Company: " + user.company
+            txtLocation.text = "Location: " + user.location
+            txtRepository.text = "Repository: " + user.repository
+            txtFollower.text = "Follower: " + user.follower
+            txtFollowing.text = "Following: " + user.following
         }
 
     }
