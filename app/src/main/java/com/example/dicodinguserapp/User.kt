@@ -1,7 +1,7 @@
 package com.example.dicodinguserapp
 
 import android.os.Parcelable
-import kotlinx.android
+import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class User (
@@ -13,5 +13,5 @@ data class User (
         var repository: Int,
         var follower: Int,
         var following: Int
-)
+) : Parcelable
 
