@@ -33,20 +33,20 @@ class UserAdapter internal constructor(private val context: Context) : BaseAdapt
 
     private inner class ViewHolder internal constructor(view: View){
         private val txtUsername: TextView = view.findViewById(R.id.txt_username)
-        private val txtName: TextView = view.findViewById(R.id.txt_name)
+//        private val txtName: TextView = view.findViewById(R.id.txt_name)
         private val imgAvatar: CircleImageView = view.findViewById(R.id.img_avatar)
-        private val txtCompany: TextView = view.findViewById(R.id.txt_company)
-        private val txtLocation: TextView = view.findViewById(R.id.txt_location)
+//        private val txtCompany: TextView = view.findViewById(R.id.txt_company)
+//        private val txtLocation: TextView = view.findViewById(R.id.txt_location)
         private val txtRepository: TextView = view.findViewById(R.id.txt_repository)
         private val txtFollower: TextView = view.findViewById(R.id.txt_follower)
         private val txtFollowing: TextView = view.findViewById(R.id.txt_following)
 
         internal fun bind(user: User){
             txtUsername.text = user.username
-            txtName.text = "Name: " + user.name
+//            txtName.text = "Name: " + user.name
             imgAvatar.setImageResource(user.avatar)
-            txtCompany.text = "Company: " + user.company
-            txtLocation.text = "Location: " + user.location
+//            txtCompany.text = "Company: " + user.company
+//            txtLocation.text = "Location: " + user.location
             txtRepository.text = "Repository: " + user.repository
             txtFollower.text = "Follower: " + user.follower
             txtFollowing.text = "Following: " + user.following

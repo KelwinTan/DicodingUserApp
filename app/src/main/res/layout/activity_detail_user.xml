@@ -1,15 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detail_img_avatar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        app:civ_border_color="#00FFFFFF"
+        android:elevation="8dp"
+        app:civ_border_width="2dp" />
+
     <TextView
-        android:id="@+id/txt_detail_name"
+        android:id="@+id/detail_txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Name"
+        android:textColor="#323033"
+        android:textSize="25sp"
+        android:textStyle="bold"
         />
+
+    <TextView
+        android:id="@+id/detail_txt_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Username"
+        android:textColor="#323033"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        >
+
+        <TextView
+            android:id="@+id/detail_txt_follower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@id/detail_txt_repository"
+            android:text="Follower"
+            android:textColor="#323033"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"
+            />
+
+        <TextView
+            android:id="@+id/detail_txt_following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Following"
+            android:textColor="#323033"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="20dp"/>
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/detail_txt_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_txt_name"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Company"
+        android:textColor="#323033"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/detail_txt_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_txt_company"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Location"
+        android:textColor="#323033"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/detail_txt_repository"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_txt_location"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Repository"
+        android:textColor="#323033"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+
 </LinearLayout>

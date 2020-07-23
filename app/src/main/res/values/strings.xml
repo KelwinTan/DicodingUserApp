@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">DicodingUserApp</string>
     <string name="user_name">Name:</string>
+    <string name="repository">Repository</string>
+    <string name="following">Following</string>
+    <string name="follower">Follower</string>
+
 
     <string-array name="username">
         <item>JakeWharton</item>
