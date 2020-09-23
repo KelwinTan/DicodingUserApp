@@ -9,8 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingUserApp">
-        <activity android:name=".DetailUser" android:label="Detail User"></activity>
-        <activity android:name=".MainActivity" android:label="Github Users">
+        <activity android:name=".MenuActivity"></activity>
+        <activity
+            android:name=".DetailUser"
+            android:label="Detail User" />
+        <activity
+            android:name=".MainActivity"
+            android:label="Github Users">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
