@@ -98,16 +98,16 @@
     </string-array>
 
     <string-array name="avatar">
-        <item>@drawable/user1</item>
-        <item>@drawable/user2</item>
-        <item>@drawable/user3</item>
-        <item>@drawable/user4</item>
-        <item>@drawable/user5</item>
-        <item>@drawable/user6</item>
-        <item>@drawable/user7</item>
-        <item>@drawable/user8</item>
-        <item>@drawable/user9</item>
-        <item>@drawable/user10</item>
+        <item>https://avatars0.githubusercontent.com/u/66577?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/9877145?v=4</item>
+        <item>https://avatars1.githubusercontent.com/u/869684?v=4</item>
+        <item>https://avatars3.githubusercontent.com/u/227486?v=4</item>
+        <item>https://avatars3.githubusercontent.com/u/1521451?v=4</item>
+        <item>https://avatars1.githubusercontent.com/u/497670?v=4</item>
+        <item>https://avatars3.githubusercontent.com/u/363917?v=4</item>
+        <item>https://avatars2.githubusercontent.com/u/2031493?v=4</item>
+        <item>https://avatars1.githubusercontent.com/u/3713580?v=4</item>
+        <item>https://avatars1.githubusercontent.com/u/4090245?v=4</item>
     </string-array>
 
     <string name="search">Masukkan kata</string>
@@ -115,5 +115,14 @@
     <string name="this_fragment">Ini adalah menu fragment</string>
     <string name="menu_1">Menu 1</string>
     <string name="menu_2">Menu 2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tab_text_1">Follower</string>
+    <string name="tab_text_2">Following</string>
+    <string name="tab_text_3">Setting</string>
+    <string name="content_tab_home">Welcome Home</string>
+    <string name="content_tab_profile">Change your Profile here</string>
+    <string name="content_tab_text">This is Tab</string>
 
 </resources>

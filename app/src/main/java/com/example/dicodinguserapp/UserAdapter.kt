@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
 class UserAdapter internal constructor(private val context: Context) : BaseAdapter() {
@@ -41,12 +42,14 @@ class UserAdapter internal constructor(private val context: Context) : BaseAdapt
         private val txtFollower: TextView = view.findViewById(R.id.txt_follower)
         private val txtFollowing: TextView = view.findViewById(R.id.txt_following)
 
+
         internal fun bind(user: User){
             txtUsername.text = user.username
 //            txtName.text = "Name: " + user.name
-            imgAvatar.setImageResource(user.avatar)
+//            imgAvatar.setImageResource(user.avatar)
 //            txtCompany.text = "Company: " + user.company
 //            txtLocation.text = "Location: " + user.location
+            Glide.with(context).load(user.avatar).into(imgAvatar)
             txtRepository.text = "Repository: " + user.repository
             txtFollower.text = "Follower: " + user.follower
             txtFollowing.text = "Following: " + user.following
