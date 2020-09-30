@@ -13,6 +13,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
@@ -21,7 +22,7 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: UserAdapter
+    private lateinit var adapter: ListUserAdapter
     private lateinit var dataName: Array<String>
     private lateinit var dataUsername: Array<String>
     private lateinit var dataAvatar: Array<String>
@@ -43,21 +44,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         progressBar.visibility = View.INVISIBLE
-        val listView: ListView = findViewById(R.id.user_list_view)
-        adapter = UserAdapter(this)
-        listView.adapter = adapter
+//        val listView: ListView = findViewById(R.id.user_list_view)
+//        adapter = ListUserAdapter(this)
+//        listView.adapter = adapter
 
         prepare()
 
         addItem()
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            run {
-                val moveUser = Intent(this@MainActivity, DetailUserActivity::class.java)
-                moveUser.putExtra(DetailUserActivity.DETAIL_USER, users[position])
-                startActivity(moveUser)
-            }
-        }
+//        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+//            run {
+//                val moveUser = Intent(this@MainActivity, DetailUserActivity::class.java)
+//                moveUser.putExtra(DetailUserActivity.DETAIL_USER, users[position])
+//                startActivity(moveUser)
+//            }
+//        }
+        rv_users.setHasFixedSize(true)
+
     }
 
     private fun prepare() {
@@ -85,8 +88,14 @@ class MainActivity : AppCompatActivity() {
             )
             users.add(user)
         }
-        adapter.users = users
     }
+
+    private fun showRecyclerList(){
+        rv_users.layoutManager = LinearLayoutManager(this)
+        val listUserAdapter = ListUserAdapter(users)
+        rv_users.adapter = listUserAdapter
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater

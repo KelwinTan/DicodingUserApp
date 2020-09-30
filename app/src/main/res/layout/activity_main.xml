@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/user_list_view"
+<!--    <ListView-->
+<!--        android:id="@+id/user_list_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        tools:listitem="@layout/item_user" />
 
 
     <ProgressBar
