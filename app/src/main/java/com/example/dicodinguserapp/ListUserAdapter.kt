@@ -13,7 +13,14 @@ import com.bumptech.glide.request.RequestOptions
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.item_user.view.*
 
-class ListUserAdapter(private val listUser: ArrayList<User>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter(private val listUser: ArrayList<User>) :
+    RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -21,9 +28,7 @@ class ListUserAdapter(private val listUser: ArrayList<User>) : RecyclerView.Adap
         return ListViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = listUser.size
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.bind(listUser[position])
@@ -31,19 +36,21 @@ class ListUserAdapter(private val listUser: ArrayList<User>) : RecyclerView.Adap
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
-            with(itemView){
-                Glide.with(itemView.context).load(user.avatar).apply(RequestOptions().override(55,55)).into(img_avatar)
+            with(itemView) {
+                Glide.with(itemView.context).load(user.avatar).into(img_avatar)
                 txt_username.text = user.username
-                txt_follower.text = user.follower
-                txt_following.text = user.following
-                txt_repository.text = user.repository
+                txt_follower.text = "Followers: " + user.follower
+                txt_following.text = "Following: " + user.following
+                txt_repository.text = "Repository: " + user.repository
+
+                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(user) }
             }
         }
 
 
     }
 
-//    internal var users = arrayListOf<User>()
+    //    internal var users = arrayListOf<User>()
 //
 //    override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
 //        var userView = view
@@ -87,5 +94,7 @@ class ListUserAdapter(private val listUser: ArrayList<User>) : RecyclerView.Adap
 //        }
 //
 //    }
-
+    interface OnItemClickCallback {
+        fun onItemClicked(data: User)
+    }
 }

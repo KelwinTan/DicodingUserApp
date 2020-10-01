@@ -1,5 +1,6 @@
 package com.example.dicodinguserapp
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +11,17 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_follower.*
 import kotlinx.android.synthetic.main.fragment_follower.view.*
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,8 +36,9 @@ private const val ARG_PARAM2 = "param2"
 class FollowerFragment : Fragment() {
 
     private var username : String? = null
-    private var users = arrayListOf<User>()
-    private lateinit var adapter: ListUserAdapter
+    private var followersList = arrayListOf<User>()
+    private lateinit var listFollowersAdapter: ListUserAdapter
+    private var myFollowerRecyclerView: RecyclerView? = null
 
     companion object {
         private val ARG_USERNAME = "username"
@@ -49,10 +55,12 @@ class FollowerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val listView: ListView? = activity?.findViewById(R.id.user_list_view)
-        adapter = ListUserAdapter(requireContext())
-        listView?.adapter = adapter
-        getUser(username.toString())
+        myFollowerRecyclerView = view?.findViewById(R.id.rv_followers)
+//        adapter = ListUserAdapter(requireContext())
+//        listView?.adapter = adapter
+//        getUser(username.toString())
+        myFollowerRecyclerView?.setHasFixedSize(true)
+        listFollowersAdapter = ListUserAdapter(followersList)
 
     }
 
@@ -65,12 +73,18 @@ class FollowerFragment : Fragment() {
 //        username = arguments?.getString("username")
         username = arguments?.getString("username")
         Log.d("testusername", username.toString())
-
         val rootView = inflater.inflate(R.layout.fragment_follower, container, false)
-        rootView.test_username.text = username.toString()
+        rootView.rv_followers.layoutManager = LinearLayoutManager(activity)
+        getUser(username.toString())
+//        rootView.rv_followers.adapter = listFollowersAdapter
+
+
+
+//        rootView.test_username.text = username.toString()
 //        Log.d("follower fragment", username.toString())
         return rootView
     }
+
 
     private fun getUser(query: String) {
         Log.d("string query", query)
@@ -82,7 +96,6 @@ class FollowerFragment : Fragment() {
 
         val url = "https://api.github.com/users/$query/followers"
         client.get(url, object : AsyncHttpResponseHandler() {
-            @RequiresApi(Build.VERSION_CODES.KITKAT)
             override fun onSuccess(
                 statusCode: Int,
                 headers: Array<Header>,
@@ -90,13 +103,16 @@ class FollowerFragment : Fragment() {
             ) {
                 val result = String(responseBody)
                 try {
-                    val responseObject = JSONObject(result)
-                    val jsonArray = JSONArray(responseObject)
+                    val jsonArray = JSONArray(result)
+//                    val jsonArray = JSONArray(responseObject.toString())
 
                     activity?.runOnUiThread {
-                        users.clear()
-                        adapter.users.clear()
-                        adapter.notifyDataSetChanged()
+                        followersList.clear()
+//                        adapter.users.clear()
+//                        listFollowersAdapter.
+                        myFollowerRecyclerView?.recycledViewPool?.clear()
+                        myFollowerRecyclerView?.adapter = null
+                        listFollowersAdapter.notifyDataSetChanged()
                     }
 
                     for (i in 0 until jsonArray.length()) {
@@ -107,10 +123,22 @@ class FollowerFragment : Fragment() {
                     }
 
                     activity?.runOnUiThread {
-                        adapter.users = users
-                        adapter.notifyDataSetChanged()
+//                        adapter.users = users
+                        Log.d("list", followersList.toString())
+                        listFollowersAdapter = ListUserAdapter(followersList)
+
+                        listFollowersAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+                            override fun onItemClicked(user: User) {
+                                val moveUser = Intent(activity, DetailUserActivity::class.java)
+                                moveUser.putExtra(DetailUserActivity.DETAIL_USER, user)
+                                startActivity(moveUser)
+                            }
+                        })
+
+                        myFollowerRecyclerView?.adapter = listFollowersAdapter
+                        listFollowersAdapter.notifyDataSetChanged()
                     }
-                    Log.d("follower-object", responseObject.toString())
+//                    Log.d("follower-object", responseObject.toString())
                 } catch (e: Exception) {
                     Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
@@ -123,7 +151,6 @@ class FollowerFragment : Fragment() {
                 responseBody: ByteArray,
                 error: Throwable
             ) {
-                progressBar.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"
@@ -173,21 +200,10 @@ class FollowerFragment : Fragment() {
                         following
                     )
                     activity?.runOnUiThread {
-                        users.add(newUser)
-                        adapter.notifyDataSetChanged()
+                        Log.d("new-user", newUser.toString())
+                        followersList.add(newUser)
+                        listFollowersAdapter.notifyDataSetChanged()
                     }
-
-
-//                    Log.d("response from api", responseObject.getJSONArray("items").toString())
-//                    Toast.makeText(
-//                        this@MainActivity,
-//                        responseObject.getString("total_count"),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    val quote = responseObject.getString("en")
-//                    val author = responseObject.getString("author")
-//                    tvQuote.text = quote
-//                    tvAuthor.text = author
 
                 } catch (e: Exception) {
                     Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
@@ -202,7 +218,6 @@ class FollowerFragment : Fragment() {
                 error: Throwable
             ) {
                 // Jika koneksi gagal
-                progressBar.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"

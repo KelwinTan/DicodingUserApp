@@ -6,16 +6,11 @@
     tools:context=".FollowerFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/user_list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_followers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        tools:listitem="@layout/item_user" />
 
-    <TextView
-        android:id="@+id/test_username"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

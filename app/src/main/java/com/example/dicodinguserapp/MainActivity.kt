@@ -22,7 +22,7 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: ListUserAdapter
+    private lateinit var listUserAdapter: ListUserAdapter
     private lateinit var dataName: Array<String>
     private lateinit var dataUsername: Array<String>
     private lateinit var dataAvatar: Array<String>
@@ -44,23 +44,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         progressBar.visibility = View.INVISIBLE
-//        val listView: ListView = findViewById(R.id.user_list_view)
-//        adapter = ListUserAdapter(this)
-//        listView.adapter = adapter
-
-        prepare()
-
-        addItem()
-
-//        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-//            run {
-//                val moveUser = Intent(this@MainActivity, DetailUserActivity::class.java)
-//                moveUser.putExtra(DetailUserActivity.DETAIL_USER, users[position])
-//                startActivity(moveUser)
-//            }
-//        }
         rv_users.setHasFixedSize(true)
-
+        prepare()
+        addItem()
+        showRecyclerList()
     }
 
     private fun prepare() {
@@ -92,8 +79,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun showRecyclerList(){
         rv_users.layoutManager = LinearLayoutManager(this)
-        val listUserAdapter = ListUserAdapter(users)
+        listUserAdapter = ListUserAdapter(users)
         rv_users.adapter = listUserAdapter
+
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(user: User) {
+                val moveUser = Intent(this@MainActivity, DetailUserActivity::class.java)
+                moveUser.putExtra(DetailUserActivity.DETAIL_USER, user)
+                startActivity(moveUser)
+            }
+        })
     }
 
 
@@ -107,18 +102,11 @@ class MainActivity : AppCompatActivity() {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.queryHint = resources.getString(R.string.search)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            /*
-            Gunakan method ini ketika search selesai atau OK
-             */
             override fun onQueryTextSubmit(query: String): Boolean {
-//                Toast.makeText(this@MainActivity, query, Toast.LENGTH_SHORT).show()
                 getUser(query)
                 return true
             }
 
-            /*
-            Gunakan method ini untuk merespon tiap perubahan huruf pada searchView
-             */
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }
@@ -176,20 +164,8 @@ class MainActivity : AppCompatActivity() {
                     )
                     runOnUiThread {
                         users.add(newUser)
-                        adapter.notifyDataSetChanged()
+                        listUserAdapter.notifyDataSetChanged()
                     }
-
-
-//                    Log.d("response from api", responseObject.getJSONArray("items").toString())
-//                    Toast.makeText(
-//                        this@MainActivity,
-//                        responseObject.getString("total_count"),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    val quote = responseObject.getString("en")
-//                    val author = responseObject.getString("author")
-//                    tvQuote.text = quote
-//                    tvAuthor.text = author
 
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
@@ -228,14 +204,12 @@ class MainActivity : AppCompatActivity() {
         client.addHeader("Content-Type", "application/json")
 
         val url = "https://api.github.com/search/users?q=$query"
-//        Log.d("url", url)
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
                 statusCode: Int,
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                // Jika koneksi berhasil
                 progressBar.visibility = View.INVISIBLE
                 val result = String(responseBody)
                 Log.d(TAG, result)
@@ -245,8 +219,9 @@ class MainActivity : AppCompatActivity() {
 
                     runOnUiThread{
                         users.clear()
-                        adapter.users.clear()
-                        adapter.notifyDataSetChanged()
+                        rv_users.recycledViewPool.clear()
+                        rv_users.adapter = null
+                        listUserAdapter.notifyDataSetChanged()
                     }
 
                     for (i in 0 until jsonArray.length()) {
@@ -256,21 +231,19 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     runOnUiThread {
-                        adapter.users = users
-                        adapter.notifyDataSetChanged()
+                        listUserAdapter = ListUserAdapter(users)
+                        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+                            override fun onItemClicked(user: User) {
+                                val moveUser = Intent(this@MainActivity, DetailUserActivity::class.java)
+                                moveUser.putExtra(DetailUserActivity.DETAIL_USER, user)
+                                startActivity(moveUser)
+                            }
+                        })
+                        rv_users.adapter = listUserAdapter
+                        listUserAdapter.notifyDataSetChanged()
                     }
 
                     Log.d("response from api", responseObject.getJSONArray("items").toString())
-//                    Toast.makeText(
-//                        this@MainActivity,
-//                        responseObject.getString("total_count"),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    val quote = responseObject.getString("en")
-//                    val author = responseObject.getString("author")
-//                    tvQuote.text = quote
-//                    tvAuthor.text = author
-
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
@@ -283,7 +256,6 @@ class MainActivity : AppCompatActivity() {
                 responseBody: ByteArray,
                 error: Throwable
             ) {
-                // Jika koneksi gagal
                 progressBar.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
