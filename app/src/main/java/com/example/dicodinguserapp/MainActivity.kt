@@ -196,7 +196,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUser(query: String) {
         progressBar.visibility = View.VISIBLE
-        Log.d("string query", query)
         val client = AsyncHttpClient()
         client.addHeader("Authorization", "token 13104280bc3102d95eb1e2b1416e49d8921fe080")
         client.addHeader("User-Agent", "request")
@@ -212,7 +211,6 @@ class MainActivity : AppCompatActivity() {
             ) {
                 progressBar.visibility = View.INVISIBLE
                 val result = String(responseBody)
-                Log.d(TAG, result)
                 try {
                     val responseObject = JSONObject(result)
                     val jsonArray = responseObject.getJSONArray("items")
@@ -243,7 +241,6 @@ class MainActivity : AppCompatActivity() {
                         listUserAdapter.notifyDataSetChanged()
                     }
 
-                    Log.d("response from api", responseObject.getJSONArray("items").toString())
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
